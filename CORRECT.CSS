@@ -1,0 +1,106 @@
+//SELECT ELEMENTS
+// .............2ND..........
+const productsEL = document.querySelector(".products");
+
+//...........12TH.......
+const cartItemsEl = document.querySelector(".cart-items");
+
+
+
+
+
+//RENDER PRODUCTS
+//....................3RD.........
+        //we are using += below because we do not want to override productsEL 
+        // innerHtml but we want to keep the last rendered product. we are using
+        //  the backticks so that we can use the multiplying strength
+//........4TH......Change img src and alt that has the product name price, and description
+//......5th....add an onclick event addToCart() instead of an event listener on add-to-cart
+
+        
+    function renderProducts() {
+    productsEL.innerHTML = "";
+
+    products.forEach((product) => {
+        productsEL.innerHTML += `
+            <div class="item">
+                <div class="item-container">
+
+                    <div class="item-img">
+                        <img src="${product.imgSrc}" alt="${product.name}">
+                    </div>
+
+                    <div class="desc">
+                        <h2>${product.name}</h2>
+                        <h2>$${product.price.toFixed(2)}</h2>
+                        <p>${product.description}</p>
+                    </div>
+
+                    <div class="add-to-wishlist">
+                        <img src="./icons/heart.png" alt="Add to wishlist">
+                    </div>
+                    <div class="add-to-cart" onClick="addToCart(${product.id})" >
+                        <img src="./icons/bag-plus.png" alt="Add to cart">
+                    </div>
+
+                </div>
+            </div>
+        `;
+    });
+}
+
+renderProducts();
+// ........7TH....When we click on the add to cart image/button on a product
+//  we want to add the product object in a new array called cart
+
+//CART ARRAY
+let cart = [];
+
+//ADD TO CART
+function addToCart(id){
+//.....9TH....CHECK IF PRODUCT ALREADY EXIST IN CART
+if(cart.some((item) => item.id === id)){
+alert("product already in cart!");
+
+}else {
+const item = products.find(
+    (product) => product.id === id
+);}
+
+    cart.push({
+        ...item,
+    numberOfUnits:1,
+});
+
+}
+updateCart();
+
+}
+// update cart......13th....
+function updateCart(){
+    renderCartItems();
+    //renderSubtotal();
+}
+
+// render cart items...13th
+function renderCartItems(){
+    cartItemsEl.innerHTML = "";   //.....14TH...TO CLEAR THE ITEMS THAT WERE IN THE CART BEFORE
+    cart.forEach((item)=>{
+        cartItemsEl.innerHTML += `
+        <div class="cart-item">
+                    <div class="item-info">
+                        <img src="${item.imgSrc}" alt="${item.name}">
+                        <h4>${item.name}</h4>
+                    </div>
+                    <div class="unit-price">
+                        <small>$</small>${item.price}
+                    </div>
+                    <div class="units">
+                        <div class="btn minus">-</div>
+                        <div class="number">${item.numberOfUnits}</div>
+                        <div class="btn plus">+</div>           
+                    </div>
+                </div>
+                `
+    })
+}
